@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a7c6c">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<style>html,body{margin:0;padding:0}</style></head><body>
+<title>Mthi Bóveda</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root {
+  --bg: #eceff0;
+  --surface: #ffffff;
+  --ink: #11181c;
+  --muted: #5a686e;
+  --line: #d3dadc;
+  --accent: #0a7c6c;
+  --accent-ink: #ffffff;
+  --accent-soft: #d6efea;
+  --danger: #b3261e;
+  --paper-bg: #ffffff;
+  --paper-ink: #151a1d;
+  --shadow: 0 10px 30px rgba(10, 30, 28, 0.16);
+  --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --font-ui: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1113;
+    --surface: #151c1f;
+    --ink: #e7eeef;
+    --muted: #8c9ca2;
+    --line: #263135;
+    --accent: #4fd6bd;
+    --accent-ink: #03211c;
+    --accent-soft: #123b35;
+    --danger: #ff8a80;
+    --paper-bg: #151c1f;
+    --paper-ink: #e7eeef;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c1113;
+  --surface: #151c1f;
+  --ink: #e7eeef;
+  --muted: #8c9ca2;
+  --line: #263135;
+  --accent: #4fd6bd;
+  --accent-ink: #03211c;
+  --accent-soft: #123b35;
+  --danger: #ff8a80;
+  --paper-bg: #151c1f;
+  --paper-ink: #e7eeef;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.45;
+  overflow: hidden;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-tap-highlight-color: transparent;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+#app { position: relative; height: 100%; max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ibtn { flex: none; display: grid; place-items: center; width: 46px; height: 46px; padding: 0; background: transparent; border: 0; border-radius: 12px; color: var(--ink); }
+.ibtn:hover { background: var(--accent-soft); }
+.ibtn svg, .tbtn svg, .opt svg { display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.btn { min-height: 46px; padding: 0 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; font-weight: 600; font-size: 15px; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.danger { color: var(--danger); border-color: var(--danger); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.home { display: flex; flex-direction: column; height: 100%; }
+.home-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 14px; }
+.brand { font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1; letter-spacing: -0.01em; }
+.brand span { color: var(--accent); }
+.homeq { margin: 12px 0 8px; min-height: 48px; width: 100%; padding: 0 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; font-size: 16px; }
+.note { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+.list { flex: 1; min-height: 0; overflow-y: auto; display: grid; align-content: start; gap: 10px; padding: 4px 0 110px; }
+.empty { padding: 36px 8px; text-align: center; color: var(--muted); display: grid; gap: 8px; justify-items: center; }
+.empty h2 { margin: 0; font-family: var(--font-display); font-size: 26px; color: var(--ink); }
+.empty p { margin: 0; max-width: 34ch; }
+.fab { position: absolute; right: 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 8px; height: 58px; padding: 0 22px 0 18px; border: 0; border-radius: 18px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 16px; box-shadow: var(--shadow); }
+.fab svg { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.ed { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.ed-top { order: -2; display: flex; align-items: center; gap: 4px; flex: none; min-height: 56px; }
+.ed-title { flex: 1; min-width: 0; display: grid; }
+.ed-title input { min-width: 0; width: 100%; padding: 2px 4px; background: transparent; border: 0; border-radius: 6px; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; }
+.ed-title input::placeholder { color: var(--muted); }
+.ed-title small { padding: 0 4px; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ed-title small.err { color: var(--danger); }
+.backdrop { position: fixed; inset: 0; z-index: 50; background: rgba(0, 0, 0, 0.45); }
+.sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 51; max-width: 860px; max-height: 84%; margin: 0 auto; overflow-y: auto; padding: 8px max(16px, env(safe-area-inset-left, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--surface); border-radius: 22px 22px 0 0; box-shadow: var(--shadow); animation: up 0.22s ease-out; }
+@keyframes up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.sheet .grab { width: 44px; height: 5px; margin: 4px auto 10px; border-radius: 3px; background: var(--line); }
+.sheet h2 { margin: 0 0 12px; font-family: var(--font-display); font-weight: 800; font-size: 22px; }
+.sheet h3 { margin: 16px 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.sheet p { margin: 0 0 10px; color: var(--muted); font-size: 15px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.opt { display: flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 12px; text-align: left; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; font-size: 15px; font-weight: 500; }
+.opt:hover { border-color: var(--accent); }
+.opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.opt svg { color: var(--accent); flex: none; }
+.opt.danger { color: var(--danger); }
+.opt.danger svg { color: var(--danger); }
+.field { display: grid; gap: 6px; margin-bottom: 12px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.field input, .field textarea { width: 100%; min-width: 0; min-height: 48px; padding: 10px 12px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; font-size: 16px; font-weight: 400; color: var(--ink); }
+.field textarea { min-height: 120px; resize: vertical; }
+.rowbtn { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.stat { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.stat span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; }
+.result { white-space: pre-wrap; padding: 12px; margin: 8px 0; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; max-height: 34vh; overflow-y: auto; color: var(--ink); font-size: 15px; }
+.toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 70; transform: translateX(-50%); max-width: calc(100% - 32px); padding: 11px 18px; background: var(--ink); color: var(--bg); border-radius: 14px; font-size: 14px; font-weight: 500; box-shadow: var(--shadow); animation: up 0.2s ease-out; }
+[hidden] { display: none !important; }
+input, textarea, select { box-sizing: border-box; max-width: 100%; }
+.field { min-width: 0; }
+.filewrap { position: relative; display: inline-flex; }
+.ovl { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; font-size: 0; cursor: pointer; z-index: 2; }
+.opt.filewrap { position: relative; }
+*, *::before, *::after { box-sizing: border-box; }
+.top { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 14px 0 6px; }
+.hbtns { display: flex; }
+.hbtns svg, .row svg, .fab svg, .btn svg, .opt svg, .ibtn svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.content { flex: 1; min-height: 0; overflow-y: auto; padding: 6px 0 110px; }
+.field-in { width: 100%; min-height: 48px; padding: 0 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; font-size: 16px; }
+.seg { display: flex; gap: 6px; margin: 10px 0; overflow-x: auto; }
+.seg button { flex: none; min-height: 38px; padding: 0 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; font-weight: 600; font-size: 14px; }
+.seg button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.row { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 6px 8px; margin-bottom: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; text-align: left; }
+.row:active { background: var(--accent-soft); }
+.cov { flex: none; width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; }
+.meta { flex: 1; min-width: 0; display: grid; }
+.meta .t { font-weight: 600; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.meta .s { color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.star { color: var(--accent); font-size: 18px; }
+.empty { padding: 40px 12px; text-align: center; color: var(--muted); display: grid; gap: 10px; justify-items: center; }
+.empty h2 { color: var(--ink); margin: 0; font-size: 20px; }
+.lock { position: fixed; inset: 0; z-index: 80; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px; background: var(--bg); text-align: center; }
+.lock .logo { width: 84px; height: 84px; border-radius: 26px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; }
+.lock .logo svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.lock form { display: grid; gap: 10px; width: min(100%, 340px); }
+.lock .err { color: #d33; min-height: 1.2em; font-size: 14px; }
+.drow { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.drow .meta .s { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+.drow .meta .t { white-space: normal; overflow-wrap: anywhere; font-weight: 500; }
+.mono { font-family: ui-monospace, Menlo, Consolas, monospace; }
+.codebox { display: grid; justify-items: center; gap: 8px; padding: 14px; margin: 8px 0; background: #fff; border-radius: 16px; color: #000; }
+.codebox canvas { max-width: 100%; height: auto; image-rendering: pixelated; }
+.codebox .num { font-family: ui-monospace, monospace; font-size: 18px; letter-spacing: .08em; }
+.meter { height: 6px; border-radius: 6px; background: var(--line); overflow: hidden; margin: 4px 0 2px; }
+.meter i { display: block; height: 100%; width: 0; transition: width .2s, background .2s; }
+.gen-out { font-family: ui-monospace, monospace; font-size: 20px; padding: 14px; margin: 8px 0; background: var(--bg); border: 1px solid var(--line); border-radius: 14px; overflow-wrap: anywhere; user-select: all; }
+.tgl { display: flex; align-items: center; gap: 10px; min-height: 40px; font-size: 15px; }
+.tgl input { width: 20px; height: 20px; accent-color: var(--accent); }
+.range { width: 100%; accent-color: var(--accent); }
+
+</style>
+<div id="app">
+  <header class="top"><h1 class="brand">Mthi <span>Bóveda</span></h1><div class="hbtns" id="hbtns" hidden>
+    <button class="ibtn" id="genBtn" type="button" data-i="dice" aria-label="Generar contraseña"></button>
+    <button class="ibtn" id="setBtn" type="button" data-i="gear" aria-label="Ajustes"></button>
+    <button class="ibtn" id="lockBtn" type="button" data-i="lock" aria-label="Bloquear ahora"></button></div></header>
+  <main class="content" id="content"></main>
+  <button class="fab" id="addBtn" type="button" hidden><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Nuevo</button>
+  <div id="layer"></div>
+</div>
+
+<script>
+/* ===== Utilidades ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const lsGet = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } };
+const debounce = (fn, ms) => { let t; const f = (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; f.flush = () => { clearTimeout(t); fn(); }; f.cancel = () => clearTimeout(t); return f; };
+const plural = (n, a, b) => n + ' ' + (n === 1 ? a : b);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+const mkCanvas = (w, h) => { const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w)); c.height = Math.max(1, Math.round(h)); return c; };
+const toBlob = (c, type, q) => new Promise((res, rej) => c.toBlob((b) => (b ? res(b) : rej(new Error('No se pudo crear la imagen.'))), type, q));
+const nextFrame = () => new Promise((r) => requestAnimationFrame(() => setTimeout(r, 0)));
+function fmtSize(n) { return n < 1024 ? n + ' B' : n < 1048576 ? Math.round(n / 1024) + ' KB' : (n / 1048576).toFixed(1) + ' MB'; }
+function timeAgo(ms) {
+  const d = Date.now() - ms;
+  if (d < 45000) return 'ahora';
+  if (d < 3600000) return 'hace ' + Math.max(1, Math.round(d / 60000)) + ' min';
+  if (d < 86400000) return 'hace ' + Math.round(d / 3600000) + ' h';
+  if (d < 172800000) return 'ayer';
+  try { return new Date(ms).toLocaleDateString('es-CR', { day: 'numeric', month: 'short' }); } catch (e) { return ''; }
+}
+function toast(msg, ms = 2800) {
+  $$('.toast').forEach((t) => t.remove());
+  const t = el('div', 'toast', msg); t.setAttribute('role', 'status'); $('#layer').appendChild(t); setTimeout(() => t.remove(), ms);
+}
+const ICONS = {
+  back: 'M15 5l-7 7 7 7', camera: 'M4 8h3l2-3h6l2 3h3v11H4zM12 11.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z',
+  image: 'M4 5h16v14H4zM9 10a1.6 1.6 0 100-3.2A1.6 1.6 0 009 10zM4 17l5-5 4 4 3-3 4 4',
+  trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13', share: 'M12 15V3M7 8l5-5 5 5M5 13v8h14v-8',
+  download: 'M12 4v11M7 11l5 5 5-5M5 20h14', file: 'M7 3h7l5 5v13H7zM14 3v5h5', plus: 'M12 5v14M5 12h14',
+  left: 'M15 5l-7 7 7 7', right: 'M9 5l7 7-7 7', copy: 'M9 9h11v11H9zM5 15V5h10', pen: 'M4 20l4-1L19 8l-3-3L5 16zM14 7l3 3',
+  dots: 'M12 5h.01M12 12h.01M12 19h.01', check: 'M5 12l5 5 9-10', search: 'M11 4a7 7 0 100 14 7 7 0 000-14zM20 20l-4-4', star: 'M12 3l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17l-5.4 2.8 1.1-6.1L3.2 9.4l6.1-.8z', speaker: 'M4 9v6h4l5 4V5L8 9zM16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11', clock: 'M12 4a8 8 0 100 16 8 8 0 000-16zM12 8v4l3 2', shuffle: 'M4 7h4l8 10h4M4 17h4l2-2.5M14 9.5L16 7h4M18 5l2 2-2 2M18 15l2 2-2 2', lock: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 017 0v3', unlock: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 016.7-1.4', eye: 'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5z', eyeoff: 'M3 3l18 18M10 6.2A9.5 9.5 0 0112 5c6 0 10 7 10 7a17 17 0 01-3 3.7M6.3 7.6A17 17 0 002 12s4 7 10 7a9.6 9.6 0 004-.9', key: 'M14 10a4 4 0 11-1.2-2.8L21 15v3h-3v-2h-2v-2h-2.5zM8 8.5h.01', card: 'M3 6h18v12H3zM3 10h18M6 15h4', wifi: 'M2 9a15 15 0 0120 0M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0M12 19.5h.01', note: 'M6 3h9l4 4v14H6zM15 3v4h4M9 12h7M9 16h7', barcode: 'M4 5v14M7 5v14M11 5v14M14 5v14M17 5v14M20 5v14', gear: 'M12 9a3 3 0 100 6 3 3 0 000-6zM19 12l2-1.5-2-3.5-2.3.8-2-1.1L14 4h-4l-.7 2.7-2 1.1L5 7 3 10.5 5 12l-.1 1.2L3 14.5 5 18l2.3-.8 2 1.1L10 21h4l.7-2.7 2-1.1 2.3.8 2-3.5-2-1.5z', finger: 'M12 3a7 7 0 00-7 7M12 3a7 7 0 017 7v2M8 21c-1-2-1-4-1-6a5 5 0 0110 0c0 2 0 4 1 6M12 12v4c0 2 .5 3.5 1 5M9.5 17c.2 1.5.5 2.5 1 4', dice: 'M5 4h14v16H5zM9 8h.01M15 8h.01M12 12h.01M9 16h.01M15 16h.01', play: 'M7 4l13 8-13 8z', pause: 'M7 4h4v16H7zM13 4h4v16h-4z', next: 'M6 5l10 7-10 7zM18 5v14', prev: 'M18 5L8 12l10 7zM6 5v14', repeat: 'M4 11V9a3 3 0 013-3h12l-3-3M20 13v2a3 3 0 01-3 3H5l3 3', music: 'M9 18V5l11-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zM20 16a3 3 0 11-6 0 3 3 0 016 0z', radio: 'M4 9h16v11H4zM8 9l9-5M8 14.5a2 2 0 100 .01M13 13h5M13 16h5', globe: 'M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18', moon: 'M20 14A8 8 0 019.5 4 8 8 0 1020 14z', list: 'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01', down: 'M6 9l6 6 6-6', sun: 'M12 8a4 4 0 100 8 4 4 0 000-8zM12 2v2M12 20v2M2 12h2M20 12h2'
+};
+function icon(n, s = 24) { return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" aria-hidden="true"><path d="' + (ICONS[n] || '') + '"/></svg>'; }
+function paintIcons(r = document) { $$('[data-i]', r).forEach((e) => { if (!e.firstChild) e.innerHTML = icon(e.dataset.i); }); }
+
+/* hojas desde abajo */
+let sheetClose = null;
+function openSheet(title, build) {
+  if (sheetClose) sheetClose();
+  const bd = el('div', 'backdrop'), sh = el('div', 'sheet');
+  sh.setAttribute('role', 'dialog'); sh.setAttribute('aria-modal', 'true'); sh.setAttribute('aria-label', title);
+  sh.appendChild(el('div', 'grab')); sh.appendChild(el('h2', '', title));
+  const close = () => { bd.remove(); sh.remove(); if (sheetClose === close) sheetClose = null; if (sh._onClose) sh._onClose(); };
+  sheetClose = close; bd.addEventListener('click', close);
+  build(sh, close); $('#layer').append(bd, sh);
+  return close;
+}
+function optBtn(ic, label, fn, o) {
+  o = o || {};
+  const b = el('button', 'opt' + (o.danger ? ' danger' : '')); b.type = 'button';
+  b.innerHTML = icon(ic, 22) + '<span>' + esc(label) + '</span>';
+  if (o.pressed != null) b.setAttribute('aria-pressed', o.pressed ? 'true' : 'false');
+  b.addEventListener('click', fn); return b;
+}
+const grid = (sh) => { const g = el('div', 'grid'); sh.appendChild(g); return g; };
+const note = (sh, t) => { const p = el('p', '', t); p.style.color = 'var(--muted)'; p.style.margin = '0 0 10px'; sh.appendChild(p); return p; };
+
+/* ===== Almacenamiento (IndexedDB; si no hay, memoria) ===== */
+const DB = {
+  db: null, mem: { scans: new Map(), blobs: new Map() },
+  async open() {
+    try {
+      this.db = await new Promise((res, rej) => {
+        const r = indexedDB.open('mthi-escaner', 1);
+        r.onupgradeneeded = () => { r.result.createObjectStore('scans', { keyPath: 'id' }); r.result.createObjectStore('blobs'); };
+        r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); r.onblocked = () => rej(new Error('blocked'));
+      });
+      try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) { /* ok */ }
+    } catch (e) { this.db = null; }
+    return !!this.db;
+  },
+  rq(r) { return new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); },
+  tx(stores, fn) {
+    return new Promise((res, rej) => {
+      const t = this.db.transaction(stores, 'readwrite'); let out;
+      t.oncomplete = () => res(out); t.onabort = t.onerror = () => rej(t.error && t.error.name === 'QuotaExceededError' ? new Error('No hay espacio en este dispositivo.') : (t.error || new Error('No se pudo guardar.')));
+      out = fn(t);
+    });
+  },
+  async all() { return this.db ? this.rq(this.db.transaction('scans').objectStore('scans').getAll()) : Array.from(this.mem.scans.values()); },
+  async put(scan) { if (!this.db) { this.mem.scans.set(scan.id, JSON.parse(JSON.stringify(scan))); return; } await this.tx('scans', (t) => { t.objectStore('scans').put(scan); }); },
+  async putBlob(k, b) { if (!this.db) { this.mem.blobs.set(k, b); return; } await this.tx('blobs', (t) => { t.objectStore('blobs').put(b, k); }); },
+  async getBlob(k) { return this.db ? (await this.rq(this.db.transaction('blobs').objectStore('blobs').get(k))) || null : this.mem.blobs.get(k) || null; },
+  async delBlob(k) { if (!this.db) { this.mem.blobs.delete(k); return; } await this.tx('blobs', (t) => { t.objectStore('blobs').delete(k); }); },
+  async del(id) {
+    if (!this.db) { this.mem.scans.delete(id); Array.from(this.mem.blobs.keys()).filter((k) => k.indexOf(id + '/') === 0).forEach((k) => this.mem.blobs.delete(k)); return; }
+    const keys = (await this.rq(this.db.transaction('blobs').objectStore('blobs').getAllKeys())).filter((k) => String(k).indexOf(id + '/') === 0);
+    await this.tx(['scans', 'blobs'], (t) => { t.objectStore('scans').delete(id); keys.forEach((k) => t.objectStore('blobs').delete(k)); });
+  }
+};
+
+/* Guardar / compartir archivos */
+async function saveFile(name, blob) {
+  const claude = window.claude;
+  if (claude && claude.use) {
+    let dl = null; try { dl = await claude.use('downloads'); } catch (e) { dl = null; }
+    if (dl) { try { await dl.save({ filename: name, data: blob }); return 'saved'; } catch (e) { if (e && e.code === 'declined') return 'declined'; } }
+  }
+  const url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000); return 'saved';
+}
+async function shareFiles(files) {
+  try {
+    if (navigator.canShare && navigator.canShare({ files })) { await navigator.share({ files }); return 'shared'; }
+  } catch (e) { if (e && e.name === 'AbortError') return 'declined'; }
+  return 'unsupported';
+}
+const canShareFiles = (files) => { try { return !!(navigator.canShare && navigator.canShare({ files })); } catch (e) { return false; } };
+
+/* ===== Códigos: QR (byte, nivel M, v1–10) y Code 128 ===== */
+const QR = (() => {
+  const ECC = [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26], BLK = [-1, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5];
+  const rawModules = (v) => { let r = (16 * v + 128) * v + 64; if (v >= 2) { const n = Math.floor(v / 7) + 2; r -= (25 * n - 10) * n - 55; if (v >= 7) r -= 36; } return r; };
+  const dataCw = (v) => Math.floor(rawModules(v) / 8) - ECC[v] * BLK[v];
+  const gexp = [], glog = []; { let x = 1; for (let i = 0; i < 255; i++) { gexp[i] = x; glog[x] = i; x <<= 1; if (x & 256) x ^= 0x11d; } for (let i = 255; i < 512; i++) gexp[i] = gexp[i - 255]; }
+  const mul = (a, b) => (a && b ? gexp[glog[a] + glog[b]] : 0);
+  const rsGen = (d) => { let r = [1]; for (let i = 0; i < d; i++) { const n = new Array(r.length + 1).fill(0); for (let j = 0; j < r.length; j++) { n[j] ^= r[j]; n[j + 1] ^= mul(r[j], gexp[i]); } r = n; } return r; };
+  const rsRem = (data, gen) => { const res = new Array(gen.length - 1).fill(0); for (const b of data) { const f = b ^ res.shift(); res.push(0); if (f) for (let i = 0; i < res.length; i++) res[i] ^= mul(gen[i + 1], f); } return res; };
+  const bch = (v, poly, nb) => { let r = v << nb; const hb = (x) => 31 - Math.clz32(x); while (hb(r) >= hb(poly)) r ^= poly << (hb(r) - hb(poly)); return (v << nb) | r; };
+  function make(text) {
+    const bytes = Array.from(new TextEncoder().encode(text));
+    let v = 1; for (; v <= 10; v++) { const bits = 4 + (v < 10 ? 8 : 16) + bytes.length * 8; if (bits <= dataCw(v) * 8) break; }
+    if (v > 10) return null;
+    const bits = []; const put = (val, n) => { for (let i = n - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+    put(4, 4); put(bytes.length, v < 10 ? 8 : 16); bytes.forEach((b) => put(b, 8));
+    const cap = dataCw(v) * 8; put(0, Math.min(4, cap - bits.length)); while (bits.length % 8) bits.push(0);
+    for (let p = 0xec; bits.length < cap; p ^= 0xec ^ 0x11) put(p, 8);
+    const data = []; for (let i = 0; i < bits.length; i += 8) data.push(parseInt(bits.slice(i, i + 8).join(''), 2));
+    const nb = BLK[v], ec = ECC[v], raw = Math.floor(rawModules(v) / 8), short = nb - (raw % nb), sl = Math.floor(raw / nb) - ec;
+    const gen = rsGen(ec), blocks = []; let k = 0;
+    for (let i = 0; i < nb; i++) { const d = data.slice(k, k + sl + (i < short ? 0 : 1)); k += d.length; blocks.push({ d, e: rsRem(d, gen) }); }
+    const all = []; for (let i = 0; i <= sl; i++) blocks.forEach((b) => { if (i < b.d.length) all.push(b.d[i]); });
+    for (let i = 0; i < ec; i++) blocks.forEach((b) => all.push(b.e[i]));
+    const size = v * 4 + 17, M = [], F = [];
+    for (let i = 0; i < size; i++) { M.push(new Array(size).fill(false)); F.push(new Array(size).fill(false)); }
+    const set = (x, y, d) => { M[y][x] = d; F[y][x] = true; };
+    const finder = (cx, cy) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) { const x = cx + dx, y = cy + dy; if (x < 0 || y < 0 || x >= size || y >= size) continue; const m = Math.max(Math.abs(dx), Math.abs(dy)); set(x, y, m !== 4 && m !== 2); } };
+    finder(3, 3); finder(size - 4, 3); finder(3, size - 4);
+    for (let i = 0; i < size; i++) { if (!F[6][i]) set(i, 6, i % 2 === 0); if (!F[i][6]) set(6, i, i % 2 === 0); }
+    if (v > 1) { const n = Math.floor(v / 7) + 2, step = Math.floor((v * 8 + n * 3 + 5) / (n * 4 - 4)) * 2; const pos = [6]; for (let p = size - 7; pos.length < n; p -= step) pos.splice(1, 0, p);
+      for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) { if ((a === 0 && b === 0) || (a === 0 && b === n - 1) || (a === n - 1 && b === 0)) continue; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) set(pos[a] + dx, pos[b] + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); } }
+    const drawFormat = (mask) => {
+      const f = bch((0 << 3) | mask, 0x537, 10) ^ 0x5412; const bit = (i) => ((f >>> i) & 1) === 1;
+      for (let i = 0; i <= 5; i++) set(8, i, bit(i)); set(8, 7, bit(6)); set(8, 8, bit(7)); set(7, 8, bit(8)); for (let i = 9; i < 15; i++) set(14 - i, 8, bit(i));
+      for (let i = 0; i < 8; i++) set(size - 1 - i, 8, bit(i)); for (let i = 8; i < 15; i++) set(8, size - 15 + i, bit(i)); set(8, size - 8, true);
+    };
+    drawFormat(0);
+    if (v >= 7) { const f = bch(v, 0x1f25, 12); for (let i = 0; i < 18; i++) { const b = ((f >>> i) & 1) === 1, a = size - 11 + (i % 3), c = Math.floor(i / 3); set(a, c, b); set(c, a, b); } }
+    const fn = F.map((r) => r.slice());
+    let bi = 0;
+    for (let right = size - 1; right >= 1; right -= 2) { if (right === 6) right = 5; for (let vert = 0; vert < size; vert++) for (let j = 0; j < 2; j++) { const x = right - j, up = ((right + 1) & 2) === 0, y = up ? size - 1 - vert : vert; if (!fn[y][x] && bi < all.length * 8) { M[y][x] = ((all[bi >>> 3] >>> (7 - (bi & 7))) & 1) === 1; bi++; } } }
+    const masks = [(x, y) => (x + y) % 2 === 0, (x, y) => y % 2 === 0, (x, y) => x % 3 === 0, (x, y) => (x + y) % 3 === 0, (x, y) => (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0, (x, y) => ((x * y) % 2) + ((x * y) % 3) === 0, (x, y) => (((x * y) % 2) + ((x * y) % 3)) % 2 === 0, (x, y) => (((x + y) % 2) + ((x * y) % 3)) % 2 === 0];
+    const penalty = (g) => {
+      let p = 0; const n = size;
+      for (let y = 0; y < n; y++) { let run = 1; for (let x = 1; x <= n; x++) { if (x < n && g[y][x] === g[y][x - 1]) run++; else { if (run >= 5) p += run - 2; run = 1; } } }
+      for (let x = 0; x < n; x++) { let run = 1; for (let y = 1; y <= n; y++) { if (y < n && g[y][x] === g[y - 1][x]) run++; else { if (run >= 5) p += run - 2; run = 1; } } }
+      for (let y = 0; y < n - 1; y++) for (let x = 0; x < n - 1; x++) if (g[y][x] === g[y][x + 1] && g[y][x] === g[y + 1][x] && g[y][x] === g[y + 1][x + 1]) p += 3;
+      const pat = [1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0], rp = pat.slice().reverse();
+      const chk = (get) => { for (let i = 0; i < n; i++) for (let s = 0; s <= n - 11; s++) { let a = true, b = true; for (let k = 0; k < 11; k++) { const val = get(i, s + k) ? 1 : 0; if (val !== pat[k]) a = false; if (val !== rp[k]) b = false; if (!a && !b) break; } if (a) p += 40; if (b) p += 40; } };
+      chk((i, k) => g[i][k]); chk((i, k) => g[k][i]);
+      let dark = 0; g.forEach((r) => r.forEach((c) => { if (c) dark++; })); p += Math.floor(Math.abs(dark * 20 - n * n * 10) / (n * n)) * 10 * 1; return p;
+    };
+    let best = null, bm = 0, bp = 1e9;
+    for (let m = 0; m < 8; m++) {
+      const g = M.map((r) => r.slice()); for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (!fn[y][x] && masks[m](x, y)) g[y][x] = !g[y][x];
+      const save = M.map((r) => r.slice()); for (let y = 0; y < size; y++) M[y] = g[y]; drawFormat(m); const gg = M.map((r) => r.slice()); for (let y = 0; y < size; y++) M[y] = save[y];
+      const pn = penalty(gg); if (pn < bp) { bp = pn; best = gg; bm = m; }
+    }
+    return best;
+  }
+  return { make };
+})();
+
+const C128 = (() => {
+  const P = '212222 222122 222221 121223 121322 131222 122213 122312 132212 221213 221312 231212 112232 122132 122231 113222 123122 123221 223211 221132 221231 213212 223112 312131 311222 321122 321221 312212 322112 322211 212123 212321 232121 111323 131123 131321 112313 132113 132311 211313 231113 231311 112133 112331 132131 113123 113321 133121 313121 211331 231131 213113 213311 213131 311123 311321 331121 312113 312311 332111 314111 221411 431111 111224 111422 121124 121421 141122 141221 112214 112412 122114 122411 142112 142211 241211 221114 413111 241112 134111 111242 121142 121241 114212 124112 124211 411212 421112 421211 212141 214121 412121 111143 111341 131141 114113 114311 411113 411311 113141 114131 311141 411131 211412 211214 211232 2331112'.split(' ');
+  function make(text) {
+    const codes = [104]; for (const ch of text) { const c = ch.charCodeAt(0); if (c < 32 || c > 126) return null; codes.push(c - 32); }
+    let sum = 104; for (let i = 1; i < codes.length; i++) sum += codes[i] * i; codes.push(sum % 103); codes.push(106);
+    const mods = []; codes.forEach((c) => { let bar = true; for (const w of P[c]) { for (let i = 0; i < +w; i++) mods.push(bar); bar = !bar; } });
+    return mods;
+  }
+  return { make };
+})();
+
+function drawQR(canvas, text, px) {
+  const g = QR.make(text); if (!g) return false; const q = 4, n = g.length, s = Math.max(2, Math.floor(px / (n + q * 2)));
+  canvas.width = canvas.height = (n + q * 2) * s; const x = canvas.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, canvas.width, canvas.height); x.fillStyle = '#000';
+  for (let y = 0; y < n; y++) for (let i = 0; i < n; i++) if (g[y][i]) x.fillRect((i + q) * s, (y + q) * s, s, s); return true;
+}
+function drawBar(canvas, text, w, h) {
+  const m = C128.make(text); if (!m) return false; const q = 10, s = Math.max(1, Math.floor((w - q * 2) / m.length));
+  canvas.width = m.length * s + q * 2 * s; canvas.height = h; const x = canvas.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, canvas.width, h); x.fillStyle = '#000';
+  m.forEach((b, i) => { if (b) x.fillRect((i + q) * s, 0, s, h); }); return true;
+}
+
+/* ===== Bóveda: cifrado y almacenamiento ===== */
+const enc8 = new TextEncoder(), dec8 = new TextDecoder();
+const rnd = (n) => crypto.getRandomValues(new Uint8Array(n));
+const b64 = (u) => { let s = ''; for (let i = 0; i < u.length; i += 8192) s += String.fromCharCode.apply(null, u.subarray(i, i + 8192)); return btoa(s); };
+const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+const ITER = 400000;
+async function pbkdf(pass, salt, iter) {
+  const base = await crypto.subtle.importKey('raw', enc8.encode(pass), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: iter, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+}
+async function seal(key, bytes) { const iv = rnd(12); const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, bytes)); const o = new Uint8Array(12 + ct.length); o.set(iv); o.set(ct, 12); return b64(o); }
+async function unseal(key, s) { const u = unb64(s); return new Uint8Array(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: u.slice(0, 12) }, key, u.slice(12))); }
+const aesRaw = (raw, ext) => crypto.subtle.importKey('raw', raw, 'AES-GCM', !!ext, ['encrypt', 'decrypt']);
+
+const KV = (() => {
+  let db = null;
+  const opn = () => new Promise((res, rej) => { if (db) return res(db); const r = indexedDB.open('mthi-boveda', 1); r.onupgradeneeded = () => r.result.createObjectStore('kv'); r.onsuccess = () => { db = r.result; res(db); }; r.onerror = () => rej(r.error); });
+  const run = async (mode, fn) => { const d = await opn(); return new Promise((res, rej) => { const t = d.transaction('kv', mode); const q = fn(t.objectStore('kv')); t.oncomplete = () => res(q ? q.result : null); t.onerror = t.onabort = () => rej(t.error); }); };
+  return { get: (k) => run('readonly', (s) => s.get(k)), set: (k, v) => run('readwrite', (s) => s.put(v, k)), del: (k) => run('readwrite', (s) => s.delete(k)) };
+})();
+
+const V = { rec: null, K: null, items: [] };
+async function loadRec() { V.rec = await KV.get('vault'); return V.rec; }
+async function createVault(pass) {
+  const salt = rnd(16), kp = await pbkdf(pass, salt, ITER); const raw = rnd(32);
+  V.K = await aesRaw(raw, false);
+  V.items = [];
+  V.rec = { v: 1, salt: b64(salt), iter: ITER, wrap: await seal(kp, raw), data: null, bio: null, auto: 20 };
+  await saveItems();
+}
+async function saveItems() { V.rec.data = await seal(V.K, enc8.encode(JSON.stringify(V.items))); await KV.set('vault', V.rec); }
+async function unlockWith(rawK) { V.K = await aesRaw(rawK, false); V.items = V.rec.data ? JSON.parse(dec8.decode(await unseal(V.K, V.rec.data))) : []; }
+/* intentos y bloqueo progresivo */
+async function lockState() { const a = (await KV.get('att')) || { n: 0, until: 0 }; return a; }
+async function unlockPass(pass) {
+  const a = await lockState(); if (a.until > Date.now()) { const e = new Error('wait'); e.wait = Math.ceil((a.until - Date.now()) / 1000); throw e; }
+  try {
+    const kp = await pbkdf(pass, unb64(V.rec.salt), V.rec.iter); const raw = await unseal(kp, V.rec.wrap);
+    await unlockWith(raw); await KV.set('att', { n: 0, until: 0 });
+  } catch (e) {
+    if (e && e.wait) throw e;
+    a.n++; if (a.n >= 5) a.until = Date.now() + Math.min(3600, 30 * Math.pow(2, a.n - 5)) * 1000; await KV.set('att', a);
+    const er = new Error('bad'); er.left = Math.max(0, 5 - a.n); er.wait = a.until > Date.now() ? Math.ceil((a.until - Date.now()) / 1000) : 0; throw er;
+  }
+}
+async function changePass(oldp, newp) {
+  const kp = await pbkdf(oldp, unb64(V.rec.salt), V.rec.iter); const raw = await unseal(kp, V.rec.wrap);
+  const salt = rnd(16), kn = await pbkdf(newp, salt, ITER); V.rec.salt = b64(salt); V.rec.iter = ITER; V.rec.wrap = await seal(kn, raw);
+  await KV.set('vault', V.rec);
+}
+async function verifyPass(p) { try { const kp = await pbkdf(p, unb64(V.rec.salt), V.rec.iter); return await unseal(kp, V.rec.wrap); } catch (e) { return null; } }
+function lockVault() { V.K = null; V.items = []; }
+
+/* --- huella (WebAuthn) --- */
+const bioSupported = () => !!(window.PublicKeyCredential && navigator.credentials && window.isSecureContext);
+async function bioGet(cid, salt) {
+  const a = await navigator.credentials.get({ publicKey: { challenge: rnd(32), rpId: location.hostname, allowCredentials: [{ type: 'public-key', id: unb64(cid), transports: ['internal'] }], userVerification: 'required', timeout: 60000, extensions: salt ? { prf: { eval: { first: unb64(salt) } } } : {} } });
+  const x = a.getClientExtensionResults(); return x.prf && x.prf.results && x.prf.results.first ? new Uint8Array(x.prf.results.first) : null;
+}
+async function bioEnable(pass) {
+  const raw = await verifyPass(pass); if (!raw) throw new Error('clave');
+  const salt = rnd(32);
+  const cred = await navigator.credentials.create({ publicKey: { rp: { name: 'Mthi Bóveda', id: location.hostname }, user: { id: rnd(16), name: 'boveda', displayName: 'Bóveda' }, challenge: rnd(32), pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }], authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required', residentKey: 'preferred' }, timeout: 60000, extensions: { prf: { eval: { first: salt } } } } });
+  const cid = b64(new Uint8Array(cred.rawId)); const ext = cred.getClientExtensionResults();
+  let out = ext.prf && ext.prf.results && ext.prf.results.first ? new Uint8Array(ext.prf.results.first) : null;
+  if (!out && ext.prf && ext.prf.enabled) out = await bioGet(cid, b64(salt));
+  if (out) { const k = await aesRaw(out.slice(0, 32), false); V.rec.bio = { mode: 'prf', cid, salt: b64(salt), wrap: await seal(k, raw) }; }
+  else {
+    await bioGet(cid, null);
+    const gk = await crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+    await KV.set('gatekey', gk); V.rec.bio = { mode: 'gate', cid, wrap: await seal(gk, raw) };
+  }
+  await KV.set('vault', V.rec); return V.rec.bio.mode;
+}
+async function bioUnlock() {
+  const b = V.rec.bio; if (!b) throw new Error('nobio');
+  let raw;
+  if (b.mode === 'prf') { const out = await bioGet(b.cid, b.salt); if (!out) throw new Error('noprf'); raw = await unseal(await aesRaw(out.slice(0, 32), false), b.wrap); }
+  else { await bioGet(b.cid, null); const gk = await KV.get('gatekey'); raw = await unseal(gk, b.wrap); }
+  await unlockWith(raw); await KV.set('att', { n: 0, until: 0 });
+}
+async function bioDisable() { V.rec.bio = null; await KV.del('gatekey'); await KV.set('vault', V.rec); }
+
+/* --- generador --- */
+function rint(n) { const lim = Math.floor(4294967296 / n) * n; let x; do { x = crypto.getRandomValues(new Uint32Array(1))[0]; } while (x >= lim); return x % n; }
+const WORDS = 'sol luna mar rio cielo nube lluvia viento fuego tierra bosque monte valle playa isla arena roca piedra flor rosa pino cedro musgo hoja rama raiz fruta mango piña coco limon cacao cafe miel pan queso arroz frijol maiz tomate cebolla ajo sal azucar leche agua jugo nieve hielo calor frio noche dia tarde alba ocaso trueno rayo brisa ola corriente barco remo ancla faro puerto puente camino sendero ciudad pueblo casa techo puerta ventana llave mesa silla cama libro pluma lapiz papel tinta mapa reloj brujula espejo vela lampara cuerda escalera martillo clavo tornillo rueda motor tren avion cohete globo kite perro gato loro tucan jaguar mono oso lobo zorro conejo tortuga rana pez delfin ballena tiburon pulpo cangrejo abeja hormiga grillo mariposa libelula aguila halcon colibri lechuza gallo vaca caballo oveja cabra cerdo pato rojo azul verde amarillo naranja morado negro blanco gris dorado plata cobre hierro cristal madera seda lana cuero barro vidrio rapido lento fuerte suave grande chico alto bajo largo corto nuevo viejo claro oscuro dulce salado feliz tranquilo valiente sabio astuto leal noble libre unico magico secreto lejano cercano antiguo brillante'.split(' ');
+function genPass(o) {
+  if (o.words) { const w = []; for (let i = 0; i < o.nw; i++) w.push(WORDS[rint(WORDS.length)]); let s = w.join('-'); if (o.digits) s += '-' + (10 + rint(90)); return s; }
+  let sets = []; const amb = /[0OIl1o]/g;
+  const add = (s) => sets.push(o.noamb ? s.replace(amb, '') : s);
+  if (o.lower) add('abcdefghijklmnopqrstuvwxyz'); if (o.upper) add('ABCDEFGHIJKLMNOPQRSTUVWXYZ'); if (o.digits) add('0123456789'); if (o.symbols) add('!@#$%^&*()-_=+[]{};:,.?');
+  if (!sets.length) sets = ['abcdefghijklmnopqrstuvwxyz']; const all = sets.join('');
+  const out = sets.map((s) => s[rint(s.length)]); while (out.length < o.len) out.push(all[rint(all.length)]);
+  for (let i = out.length - 1; i > 0; i--) { const j = rint(i + 1); [out[i], out[j]] = [out[j], out[i]]; } return out.slice(0, o.len).join('');
+}
+function strength(p) {
+  if (!p) return { bits: 0, label: '', pct: 0, color: 'var(--line)' };
+  let pool = 0; if (/[a-z]/.test(p)) pool += 26; if (/[A-Z]/.test(p)) pool += 26; if (/\d/.test(p)) pool += 10; if (/[^A-Za-z0-9]/.test(p)) pool += 20;
+  let bits = p.length * Math.log2(pool || 1); if (/^(.)\1+$/.test(p) || /^(0123|1234|abcd|qwer|password|contraseña)/i.test(p)) bits = Math.min(bits, 20);
+  const l = bits < 28 ? ['Muy débil', '#d33'] : bits < 40 ? ['Débil', '#e67e22'] : bits < 60 ? ['Aceptable', '#d4a017'] : bits < 80 ? ['Fuerte', '#2e9e5b'] : ['Muy fuerte', '#0a7c6c'];
+  return { bits, label: l[0], pct: Math.min(100, bits / 90 * 100), color: l[1] };
+}
+
+const jget = (k, d) => { try { return JSON.parse(lsGet(k)) || d; } catch (e) { return d; } };
+/* ===== Bóveda: interfaz ===== */
+const TYPES = {
+  pw: { label: 'Clave', ic: 'key', title: 'Sitio o app', fields: [['user', 'Usuario o correo'], ['pass', 'Contraseña', 'secret'], ['url', 'Sitio web'], ['notes', 'Notas', 'area']] },
+  code: { label: 'Código', ic: 'barcode', title: 'Nombre (tienda, entrada…)', fields: [['number', 'Número o texto del código'], ['kind', 'Tipo', 'select', [['barras', 'Código de barras'], ['qr', 'Código QR']]], ['notes', 'Notas', 'area']] },
+  card: { label: 'Tarjeta', ic: 'card', title: 'Nombre (banco, tarjeta…)', fields: [['holder', 'Titular'], ['number', 'Número', 'secret'], ['exp', 'Vence (MM/AA)'], ['cvv', 'CVV', 'secret'], ['pin', 'PIN', 'secret'], ['notes', 'Notas', 'area']] },
+  wifi: { label: 'Wifi', ic: 'wifi', title: 'Nombre de la red', fields: [['pass', 'Contraseña', 'secret'], ['sec', 'Seguridad', 'select', [['WPA', 'WPA / WPA2 / WPA3'], ['WEP', 'WEP'], ['nopass', 'Abierta']]]] },
+  note: { label: 'Nota', ic: 'note', title: 'Título', fields: [['text', 'Nota privada', 'area']] }
+};
+let filter = 'all', query = '', idleT = null, hideT = null, clipT = null;
+const content = () => $('#content');
+const FIELD_LABEL = (t, k) => (TYPES[t].fields.find((f) => f[0] === k) || [k, k])[1];
+
+function showLock() {
+  closeAllSheets(); lockVault(); $$('.lock').forEach((x) => x.remove());
+  $('#hbtns').hidden = true; $('#addBtn').hidden = true; content().textContent = '';
+  const rec = V.rec, first = !rec;
+  const d = el('div', 'lock'); d.setAttribute('role', 'dialog'); d.setAttribute('aria-label', first ? 'Crear bóveda' : 'Bóveda bloqueada');
+  const lg = el('div', 'logo'); lg.innerHTML = icon('lock', 40); d.appendChild(lg);
+  d.appendChild(el('h2', '', first ? 'Crea tu bóveda' : 'Bóveda bloqueada'));
+  const f = el('form'); f.noValidate = true;
+  const p1 = el('input', 'field-in'); p1.type = 'password'; p1.autocomplete = 'off'; p1.placeholder = first ? 'Crea un PIN o contraseña' : 'PIN o contraseña'; p1.setAttribute('aria-label', 'PIN o contraseña'); f.appendChild(p1);
+  let p2; if (first) { p2 = el('input', 'field-in'); p2.type = 'password'; p2.autocomplete = 'off'; p2.placeholder = 'Repítelo'; f.appendChild(p2); }
+  const err = el('div', 'err'); err.setAttribute('role', 'alert');
+  const go = el('button', 'btn primary', first ? 'Crear bóveda' : 'Abrir'); go.type = 'submit'; f.append(go, err); d.appendChild(f);
+  if (first) d.appendChild(el('p', 'note', 'Mínimo 6 caracteres. Una frase de 8 o más caracteres es mucho más segura que un PIN corto. Si la olvidas no hay forma de recuperarla: todo va cifrado solo en tu teléfono.'));
+  else if (rec.bio) { const bb = el('button', 'btn'); bb.type = 'button'; bb.innerHTML = icon('finger', 20) + ' Usar huella'; bb.style.cssText = 'display:flex;gap:8px;align-items:center'; bb.addEventListener('click', () => tryBio(err)); d.insertBefore(bb, f); }
+  f.addEventListener('submit', async (e) => {
+    e.preventDefault(); err.textContent = ''; go.disabled = true;
+    try {
+      if (first) {
+        if (p1.value.length < 6) { err.textContent = 'Usa al menos 6 caracteres.'; go.disabled = false; return; } if (p1.value !== p2.value) { err.textContent = 'No coinciden.'; go.disabled = false; return; }
+        go.textContent = 'Creando…'; await createVault(p1.value); afterUnlock();
+      } else { go.textContent = 'Abriendo…'; await unlockPass(p1.value); afterUnlock(); }
+    } catch (x) {
+      if (x && x.wait) err.textContent = 'Demasiados intentos. Espera ' + (x.wait >= 60 ? Math.ceil(x.wait / 60) + ' min' : x.wait + ' s') + '.';
+      else if (x && x.message === 'bad') err.textContent = 'Clave incorrecta' + (x.left ? ' (' + plural(x.left, 'intento', 'intentos') + ' antes del bloqueo)' : '') + '.';
+      else err.textContent = 'No se pudo abrir. Inténtalo otra vez.';
+      p1.value = ''; go.textContent = first ? 'Crear bóveda' : 'Abrir'; go.disabled = false; p1.focus();
+    }
+    go.disabled = false;
+  });
+  $('#layer').appendChild(d);
+  if (!first && rec.bio) setTimeout(() => tryBio(err, true), 250); else setTimeout(() => p1.focus(), 100);
+}
+async function tryBio(err, silent) {
+  try { await bioUnlock(); afterUnlock(); } catch (e) { if (!silent) err.textContent = 'No se pudo con la huella. Usa tu clave.'; const i = $('.lock input'); if (i) i.focus(); }
+}
+function afterUnlock() { $$('.lock').forEach((x) => x.remove()); $('#hbtns').hidden = false; $('#addBtn').hidden = false; filter = 'all'; query = ''; render(); armIdle(); }
+
+/* bloqueo automático */
+function armIdle() { clearTimeout(idleT); if (!V.K) return; idleT = setTimeout(() => { if (V.K) showLock(); }, 3 * 60000); }
+['pointerdown', 'keydown', 'scroll'].forEach((ev) => document.addEventListener(ev, armIdle, { passive: true, capture: true }));
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { clearTimeout(hideT); if (V.K) hideT = setTimeout(() => { if (document.hidden && V.K) showLock(); }, ((V.rec && V.rec.auto) || 20) * 1000); }
+  else { clearTimeout(hideT); if (V.K) armIdle(); }
+});
+
+function closeAllSheets() { if (sheetClose) sheetClose(); }
+function copy(text, label) {
+  const done = () => { toast((label || 'Copiado') + ' · se borra en 30 s', 2200); clearTimeout(clipT); clipT = setTimeout(() => { try { navigator.clipboard.writeText(' '); } catch (e) {} }, 30000); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, () => toast('No se pudo copiar')); else toast('No se pudo copiar');
+}
+function ask(title, msg, ok, danger) {
+  return new Promise((res) => openSheet(title, (sh, close) => {
+    note(sh, msg); const r = el('div', 'rowbtn'); const c = el('button', 'btn', 'Cancelar'); c.type = 'button'; const o = el('button', 'btn primary', ok); o.type = 'button'; if (danger) o.style.background = '#d33';
+    c.addEventListener('click', () => { res(false); close(); }); o.addEventListener('click', () => { res(true); close(); }); r.append(c, o); sh.appendChild(r); sh._onClose = () => res(false);
+  }));
+}
+const mask = (v) => '•'.repeat(Math.min(12, (v || '').length || 8));
+function subtitle(it) {
+  if (it.type === 'pw') return it.user || '';
+  if (it.type === 'code') return it.number || '';
+  if (it.type === 'card') return it.number ? '•••• ' + it.number.replace(/\D/g, '').slice(-4) : it.holder || '';
+  if (it.type === 'wifi') return 'Red wifi';
+  return (it.text || '').slice(0, 40);
+}
+
+/* lista */
+function render() {
+  const c = content(); c.textContent = '';
+  const inp = el('input', 'field-in'); inp.type = 'search'; inp.placeholder = 'Buscar…'; inp.value = query; inp.setAttribute('aria-label', 'Buscar');
+  inp.addEventListener('input', () => { query = inp.value; drawList(); }); c.appendChild(inp);
+  const seg = el('div', 'seg'); [['all', 'Todo'], ['fav', '★']].concat(Object.keys(TYPES).map((k) => [k, TYPES[k].label])).forEach(([k, l]) => { const b = el('button', '', l); b.type = 'button'; b.setAttribute('aria-pressed', filter === k ? 'true' : 'false'); b.addEventListener('click', () => { filter = k; render(); }); seg.appendChild(b); }); c.appendChild(seg);
+  const box = el('div'); box.id = 'list'; c.appendChild(box); drawList();
+}
+function drawList() {
+  const box = $('#list'); if (!box) return; box.textContent = '';
+  const q = query.trim().toLowerCase();
+  const items = V.items.filter((i) => (filter === 'all' || (filter === 'fav' ? i.fav : i.type === filter)) && (!q || (i.title + ' ' + (i.user || '') + ' ' + (i.notes || '')).toLowerCase().includes(q))).sort((a, b) => (b.fav ? 1 : 0) - (a.fav ? 1 : 0) || a.title.localeCompare(b.title, 'es'));
+  if (!items.length) { const e = el('div', 'empty'); e.innerHTML = V.items.length ? '<p>Nada coincide.</p>' : '<h2>Tu bóveda está vacía</h2><p>Toca “Nuevo” para guardar una clave, una tarjeta de la tienda, un código QR, la clave del wifi o una nota privada.</p>'; box.appendChild(e); return; }
+  items.forEach((it) => {
+    const b = el('button', 'row'); b.type = 'button'; const cv = el('div', 'cov'); cv.innerHTML = icon(TYPES[it.type].ic, 22); b.appendChild(cv);
+    const m = el('div', 'meta'); m.appendChild(el('span', 't', it.title)); m.appendChild(el('span', 's', subtitle(it))); b.appendChild(m);
+    if (it.fav) b.appendChild(el('span', 'star', '★')); b.addEventListener('click', () => openItem(it.id)); box.appendChild(b);
+  });
+}
+
+/* detalle */
+function wifiStr(it) { const e = (s) => String(s || '').replace(/([\;,:"])/g, '\\$1'); return 'WIFI:T:' + (it.sec || 'WPA') + ';S:' + e(it.title) + ';' + (it.sec === 'nopass' ? '' : 'P:' + e(it.pass) + ';') + ';'; }
+function openItem(id) {
+  const it = V.items.find((x) => x.id === id); if (!it) return;
+  openSheet(it.title, (sh, close) => {
+    const T = TYPES[it.type];
+    if (it.type === 'code' && it.number) { const cb = el('div', 'codebox'); const cv = document.createElement('canvas'); const ok = it.kind === 'qr' ? drawQR(cv, it.number, 280) : drawBar(cv, it.number, 340, 120); if (ok) { cb.appendChild(cv); cb.appendChild(el('div', 'num', it.number)); } else cb.textContent = it.kind === 'qr' ? 'Texto demasiado largo para un QR.' : 'Este código tiene caracteres no válidos para barras. Usa tipo QR.'; sh.appendChild(cb); }
+    if (it.type === 'wifi') { const cb = el('div', 'codebox'); const cv = document.createElement('canvas'); if (drawQR(cv, wifiStr(it), 260)) { cb.appendChild(cv); cb.appendChild(el('div', '', 'Escanéalo con otro celular para entrar a la red')); cb.lastChild.style.fontSize = '13px'; sh.appendChild(cb); } }
+    T.fields.forEach(([k, lb, kind]) => {
+      if (it.type === 'code' && (k === 'number' || k === 'kind')) return; if (it.type === 'wifi' && k === 'sec') return;
+      const v = it[k]; if (!v) return;
+      const r = el('div', 'drow'); const m = el('div', 'meta'); m.appendChild(el('span', 's', lb)); const t = el('span', 't mono' + (kind === 'secret' ? '' : ''), kind === 'secret' ? mask(v) : v); if (kind !== 'secret') t.className = 't'; m.appendChild(t); r.appendChild(m);
+      if (kind === 'secret') { let shown = false; const e = el('button', 'ibtn'); e.type = 'button'; e.dataset.i = 'eye'; e.setAttribute('aria-label', 'Mostrar u ocultar'); e.addEventListener('click', () => { shown = !shown; t.textContent = shown ? v : mask(v); e.innerHTML = icon(shown ? 'eyeoff' : 'eye'); if (shown) setTimeout(() => { shown = false; t.textContent = mask(v); e.innerHTML = icon('eye'); }, 15000); }); r.appendChild(e); }
+      const cp = el('button', 'ibtn'); cp.type = 'button'; cp.dataset.i = 'copy'; cp.setAttribute('aria-label', 'Copiar ' + lb); cp.addEventListener('click', () => copy(v, lb + ' copiado')); r.appendChild(cp);
+      paintIcons(r); sh.appendChild(r);
+    });
+    if (it.type === 'pw' && it.pass) { const s = strength(it.pass); sh.appendChild(el('p', 'note', 'Seguridad de la clave: ' + s.label + (V.items.filter((x) => x.type === 'pw' && x.pass === it.pass).length > 1 ? ' · repetida en otra cuenta' : ''))); }
+    const rb = el('div', 'rowbtn');
+    const fv = el('button', 'btn', it.fav ? '★ Favorita' : '☆ Favorita'); fv.type = 'button'; fv.addEventListener('click', async () => { it.fav = !it.fav; await saveItems(); fv.textContent = it.fav ? '★ Favorita' : '☆ Favorita'; drawList(); });
+    const ed = el('button', 'btn', 'Editar'); ed.type = 'button'; ed.addEventListener('click', () => { close(); editItem(it); });
+    const dl = el('button', 'btn', 'Eliminar'); dl.type = 'button'; dl.style.color = '#d33'; dl.addEventListener('click', async () => { close(); if (await ask('¿Eliminar?', '“' + it.title + '” se borrará de la bóveda.', 'Eliminar', true)) { V.items = V.items.filter((x) => x.id !== it.id); await saveItems(); drawList(); toast('Eliminado'); } });
+    rb.append(fv, ed, dl); sh.appendChild(rb);
+  });
+}
+
+/* crear / editar */
+function chooseType() {
+  openSheet('¿Qué quieres guardar?', (sh, close) => { const g = grid(sh); Object.keys(TYPES).forEach((k) => g.appendChild(optBtn(TYPES[k].ic, TYPES[k].label, () => { close(); editItem({ type: k }); }))); });
+}
+function editItem(it) {
+  const T = TYPES[it.type], isNew = !it.id; const d = Object.assign({}, it);
+  openSheet((isNew ? 'Nueva ' : 'Editar ') + T.label.toLowerCase(), (sh, close) => {
+    const form = el('form'); form.noValidate = true; const refs = {};
+    const mkf = (key, label, kind, opts) => {
+      const w = el('label', 'field'); w.appendChild(document.createTextNode(label)); let i;
+      if (kind === 'area') { i = el('textarea'); i.rows = 4; } else if (kind === 'select') { i = el('select'); opts.forEach(([v, l]) => { const o = el('option', '', l); o.value = v; i.appendChild(o); }); }
+      else { i = el('input'); i.type = 'text'; i.autocomplete = 'off'; i.autocapitalize = 'none'; i.spellcheck = false; if (kind === 'secret') i.classList.add('mono'); }
+      i.value = d[key] != null ? d[key] : (kind === 'select' ? opts[0][0] : ''); i.addEventListener('input', () => { d[key] = i.value; }); if (kind === 'select') d[key] = i.value; refs[key] = i; w.appendChild(i); form.appendChild(w); return w;
+    };
+    mkf('title', T.title);
+    T.fields.forEach(([k, lb, kind, opts]) => {
+      const w = mkf(k, lb, kind, opts);
+      if (it.type === 'pw' && k === 'pass') { const r = el('div', 'rowbtn'); const g = el('button', 'btn', 'Generar'); g.type = 'button'; g.addEventListener('click', () => genSheet((p) => { d.pass = p; refs.pass.value = p; upd(); })); r.appendChild(g); w.appendChild(r); const mt = el('div', 'meter'); mt.innerHTML = '<i></i>'; w.appendChild(mt); const lbl = el('small'); w.appendChild(lbl); var upd = () => { const s = strength(refs.pass.value); mt.firstChild.style.width = s.pct + '%'; mt.firstChild.style.background = s.color; lbl.textContent = s.label; }; refs.pass.addEventListener('input', upd); upd(); }
+    });
+    const err = el('div', 'err'); err.style.color = '#d33'; form.appendChild(err);
+    const rb = el('div', 'rowbtn'); const sv = el('button', 'btn primary', 'Guardar'); sv.type = 'submit'; rb.appendChild(sv); form.appendChild(rb); sh.appendChild(form);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); d.title = (d.title || '').trim(); if (!d.title) { err.textContent = 'Ponle un nombre.'; return; }
+      if (it.type === 'code' && !d.number) { err.textContent = 'Escribe el número o texto del código.'; return; }
+      d.updated = Date.now(); if (isNew) { d.id = newId(); V.items.push(d); } else V.items[V.items.findIndex((x) => x.id === it.id)] = d;
+      await saveItems(); close(); drawList(); toast('Guardado', 1600);
+    });
+    setTimeout(() => refs.title.focus(), 150);
+  });
+}
+
+/* generador */
+function genSheet(onUse) {
+  const o = Object.assign({ len: 16, lower: true, upper: true, digits: true, symbols: true, noamb: false, words: false, nw: 4 }, jget('mthi-gen', {}));
+  openSheet('Generar contraseña', (sh, close) => {
+    const out = el('div', 'gen-out'); sh.appendChild(out); const mt = el('div', 'meter'); mt.innerHTML = '<i></i>'; sh.appendChild(mt); const lb = el('small'); sh.appendChild(lb);
+    const make = () => { out.textContent = genPass(o); const s = strength(out.textContent); mt.firstChild.style.width = s.pct + '%'; mt.firstChild.style.background = s.color; lb.textContent = s.label + ' · ' + Math.round(s.bits) + ' bits'; lsSet('mthi-gen', JSON.stringify(o)); };
+    const tg = (k, l) => { const w = el('label', 'tgl'); const c = el('input'); c.type = 'checkbox'; c.checked = !!o[k]; c.addEventListener('change', () => { o[k] = c.checked; make(); }); w.append(c, document.createTextNode(l)); return w; };
+    const rg = el('label', 'field'); const rl = el('span', '', 'Longitud: ' + o.len); const r = el('input', 'range'); r.type = 'range'; r.min = 8; r.max = 40; r.value = o.len; r.addEventListener('input', () => { o.len = +r.value; rl.textContent = 'Longitud: ' + o.len; make(); }); rg.append(rl, r);
+    const wd = el('label', 'tgl'); const wc = el('input'); wc.type = 'checkbox'; wc.checked = o.words; wd.append(wc, document.createTextNode('Frase fácil de recordar (palabras)'));
+    const opts = el('div'); const fill = () => { opts.textContent = ''; if (o.words) opts.append(tg('digits', 'Agregar número')); else opts.append(rg, tg('lower', 'minúsculas'), tg('upper', 'MAYÚSCULAS'), tg('digits', 'Números'), tg('symbols', 'Símbolos'), tg('noamb', 'Evitar caracteres confusos (0 O l 1)')); };
+    wc.addEventListener('change', () => { o.words = wc.checked; fill(); make(); }); sh.append(wd, opts); fill();
+    const rb = el('div', 'rowbtn'); const re = el('button', 'btn', 'Otra'); re.type = 'button'; re.addEventListener('click', make);
+    const cp = el('button', 'btn', 'Copiar'); cp.type = 'button'; cp.addEventListener('click', () => copy(out.textContent, 'Contraseña copiada')); rb.append(re, cp);
+    if (onUse) { const us = el('button', 'btn primary', 'Usar'); us.type = 'button'; us.addEventListener('click', () => { onUse(out.textContent); close(); }); rb.appendChild(us); }
+    sh.appendChild(rb); make();
+  });
+}
+
+/* ajustes */
+function settings() {
+  openSheet('Ajustes', (sh, close) => {
+    const g = grid(sh); g.style.gridTemplateColumns = '1fr';
+    const bio = V.rec.bio;
+    g.appendChild(optBtn('finger', bio ? 'Huella activada (' + (bio.mode === 'prf' ? 'cifrado fuerte' : 'acceso rápido') + ') · desactivar' : 'Activar huella', async () => {
+      if (bio) { await bioDisable(); toast('Huella desactivada'); close(); return; }
+      if (!bioSupported()) { toast('Este navegador no permite huella'); return; }
+      close(); const p = await askPass('Activar huella', 'Escribe tu clave para vincular la huella.'); if (p == null) return;
+      try { const m = await bioEnable(p); toast(m === 'prf' ? 'Huella activada con cifrado fuerte' : 'Huella activada como acceso rápido', 3500); } catch (e) { toast(e && e.message === 'clave' ? 'Clave incorrecta' : 'No se pudo activar la huella. Revisa que tengas una huella registrada en el teléfono.', 3500); }
+    }));
+    g.appendChild(optBtn('lock', 'Cambiar clave', async () => { close(); const o = await askPass('Cambiar clave', 'Clave actual'); if (o == null) return; if (!(await verifyPass(o))) { toast('Clave incorrecta'); return; } const n = await askPass('Cambiar clave', 'Clave nueva (mínimo 6 caracteres)'); if (n == null) return; if (n.length < 6) { toast('Mínimo 6 caracteres'); return; } await changePass(o, n); toast('Clave cambiada'); }));
+    const au = el('label', 'field'); au.append('Bloquear al salir de la app'); const sel = el('select'); [[5, 'a los 5 segundos'], [20, 'a los 20 segundos'], [60, 'al minuto'], [300, 'a los 5 minutos']].forEach(([v, l]) => { const o = el('option', '', l); o.value = v; if (+v === V.rec.auto) o.selected = true; sel.appendChild(o); }); sel.addEventListener('change', async () => { V.rec.auto = +sel.value; await KV.set('vault', V.rec); }); au.appendChild(sel); sh.appendChild(au);
+    g.appendChild(optBtn('download', 'Guardar copia de seguridad', () => { const blob = new Blob([JSON.stringify(V.rec)], { type: 'application/json' }); const f = new File([blob], 'mthi-boveda-respaldo.json', { type: 'application/json' }); if (navigator.canShare && navigator.canShare({ files: [f] })) navigator.share({ files: [f] }).catch(() => {}); else { const a = el('a'); a.href = URL.createObjectURL(blob); a.download = f.name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); } }));
+    const fw = el('div', 'filewrap'); fw.style.width = '100%'; const ib = optBtn('file', 'Restaurar copia de seguridad', () => {}); ib.style.width = '100%'; fw.appendChild(ib); const fi = el('input', 'ovl'); fi.type = 'file'; fi.accept = '.json,application/json'; fw.appendChild(fi);
+    fi.addEventListener('change', async () => { const f = fi.files[0]; if (!f) return; try { const rec = JSON.parse(await f.text()); if (!rec.salt || !rec.wrap) throw 0; close(); if (!(await ask('¿Restaurar?', 'Reemplaza TODO lo que hay ahora por la copia. Después se abre con la clave que tenía esa copia.', 'Restaurar', true))) return; rec.bio = null; await KV.set('vault', rec); await KV.del('gatekey'); V.rec = rec; showLock(); } catch (e) { toast('Ese archivo no es una copia válida'); } });
+    g.appendChild(fw);
+    g.appendChild(optBtn('trash', 'Borrar toda la bóveda', async () => { close(); if (await ask('¿Borrar todo?', 'Se eliminan todas las claves y datos de este teléfono. No se puede deshacer.', 'Borrar todo', true)) { await KV.del('vault'); await KV.del('gatekey'); await KV.del('att'); V.rec = null; showLock(); } }, { danger: true }));
+    sh.appendChild(el('p', 'note', plural(V.items.length, 'elemento', 'elementos') + ' · cifrado AES-256 en este teléfono, sin nube.'));
+  });
+}
+function askPass(title, msg) {
+  return new Promise((res) => openSheet(title, (sh, close) => {
+    const f = el('form'); f.noValidate = true; const l = el('label', 'field'); l.append(msg); const i = el('input'); i.type = 'password'; i.autocomplete = 'off'; l.appendChild(i); f.appendChild(l);
+    const b = el('button', 'btn primary', 'Aceptar'); b.type = 'submit'; f.appendChild(b); sh.appendChild(f); let done = false;
+    f.addEventListener('submit', (e) => { e.preventDefault(); done = true; res(i.value); close(); }); sh._onClose = () => { if (!done) res(null); }; setTimeout(() => i.focus(), 150);
+  }));
+}
+
+async function init() {
+  paintIcons();
+  $('#addBtn').addEventListener('click', chooseType); $('#genBtn').addEventListener('click', () => genSheet(null)); $('#setBtn').addEventListener('click', settings); $('#lockBtn').addEventListener('click', showLock);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sheetClose) sheetClose(); });
+  try { await loadRec(); } catch (e) { console.log('ERR', e && e.message, e); content().textContent = 'Este navegador no permite guardar datos de forma segura.'; return; }
+  try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {}
+  showLock();
+}
+init();
+
+</script>
+
+<script>if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}</script>
+</body></html>
